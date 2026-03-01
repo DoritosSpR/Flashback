@@ -46,11 +46,18 @@ public abstract class MixinServerLoginPacketListenerImpl {
         }
     }
 
-    @Inject(method = "tick", at = @At("HEAD"))
+@Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     public void onTick(CallbackInfo ci) {
-        if (this.server instanceof ReplayServer && this.state == ServerLoginPacketListenerImpl.State.READY_TO_ACCEPT) {
-            // Forzamos el inicio para evitar el error de Sinytra Connector
-            this.state = ServerLoginPacketListenerImpl.State.ACCEPTED;
+        if (this.server instanceof ReplayServer) {
+            if (this.state == ServerLoginPacketListenerImpl.State.READY_TO_ACCEPT) {
+                this.state = ServerLoginPacketListenerImpl.State.ACCEPTED;
+            }
+            // Si Sinytra nos tiene bloqueados aquí, saltamos directamente al inicio
+            if (this.state == ServerLoginPacketListenerImpl.State.ACCEPTED) {
+                // Este método es el que Minecraft llama para meter al jugador al mundo
+                this.handleGameProfileConfig(); 
+                ci.cancel();
+            }
         }
     }
 
