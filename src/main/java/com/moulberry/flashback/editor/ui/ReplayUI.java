@@ -241,17 +241,21 @@ public class ReplayUI {
         fonts.clearTexData();
     }
 
-    private static byte[] loadFont(String name) {
-        try {
-            var resource = Minecraft.getInstance().getResourceManager().getResource(Flashback.createResourceLocation(name));
-            if (resource.isEmpty()) throw new MissingResourceException("Missing font: " + name, "Font", "");
-            try (InputStream is = resource.get().open()) {
-                return is.readAllBytes();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+private static Font loadFont(String name, float size) {
+    try {
+        InputStream is = ReplayUI.class.getResourceAsStream("/assets/flashback/font/" + name);
+        if (is == null) {
+            // En lugar de lanzar el error, imprimimos un aviso en la consola
+            System.err.println("[Flashback] ADVERTENCIA: No se encontro la fuente " + name + ". Usando fuente de emergencia.");
+            return new Font(Font.SANS_SERIF, Font.PLAIN, (int)size);
         }
+        return Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(size);
+    } catch (Exception e) {
+        // Atrapamos cualquier error (formato, lectura, etc.) para evitar el crash
+        System.err.println("[Flashback] Error al cargar fuente: " + e.getMessage());
+        return new Font(Font.SANS_SERIF, Font.PLAIN, (int)size);
     }
+}
 
     public static Vec3 getMouseForwardsVector() {
         return getMouseForwardsVector(ImGui.getMousePosX(), ImGui.getMousePosY());
