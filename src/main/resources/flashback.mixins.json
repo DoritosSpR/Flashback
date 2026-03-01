@@ -49,8 +49,10 @@
     "playback.MixinEntity",
     "playback.MixinLivingEntity",
     "playback.MixinScoreboard",
+    "record.MixinConnection",
     "replay_server.MixinPlayerList",
     "replay_server.MixinServerLevel",
+    "replay_server.MixinServerLoginPacketListenerImpl",
     "visuals.MixinLevel"
   ]
 }
