@@ -244,19 +244,17 @@ public class ReplayUI {
         fonts.clearTexData();
     }
 
-private static Font loadFont(String name, float size) {
+private static byte[] loadFont(String name) {
     try {
         InputStream is = ReplayUI.class.getResourceAsStream("/assets/flashback/font/" + name);
         if (is == null) {
-            // En lugar de lanzar el error, imprimimos un aviso en la consola
-            System.err.println("[Flashback] ADVERTENCIA: No se encontro la fuente " + name + ". Usando fuente de emergencia.");
-            return new Font(Font.SANS_SERIF, Font.PLAIN, (int)size);
+            System.err.println("[Flashback] ADVERTENCIA: No se encontro la fuente " + name + ". Usando array vacio.");
+            return new byte[0]; 
         }
-        return Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(size);
+        return is.readAllBytes();
     } catch (Exception e) {
-        // Atrapamos cualquier error (formato, lectura, etc.) para evitar el crash
-        System.err.println("[Flashback] Error al cargar fuente: " + e.getMessage());
-        return new Font(Font.SANS_SERIF, Font.PLAIN, (int)size);
+        System.err.println("[Flashback] Error al leer la fuente " + name + ": " + e.getMessage());
+        return new byte[0];
     }
 }
 
