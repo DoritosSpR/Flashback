@@ -27,9 +27,9 @@
 		"modmenu": [
 			"com.moulberry.flashback.FlashbackModMenuApiImpl"
 		],
-        "voicechat": [
-            "com.moulberry.flashback.compat.simple_voice_chat.SimpleVoiceChatPlugin"
-        ]
+		"voicechat": [
+			"com.moulberry.flashback.compat.simple_voice_chat.SimpleVoiceChatPlugin"
+		]
 	},
 	"accessWidener": "flashback.accesswidener",
 	"mixins": [
@@ -40,3 +40,4 @@
 		"minecraft": "~1.20.1",
 		"java": ">=17"
 	}
+}
