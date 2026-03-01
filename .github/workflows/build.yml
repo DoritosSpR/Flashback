@@ -19,7 +19,8 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build
+        # Añadimos clean para purgar la carpeta build y asegurar que los recursos se procesen
+        run: ./gradlew clean build --no-daemon
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
