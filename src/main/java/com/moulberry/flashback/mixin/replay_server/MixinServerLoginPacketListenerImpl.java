@@ -1,11 +1,8 @@
 package com.moulberry.flashback.mixin.replay_server;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.moulberry.flashback.playback.ReplayServer;
-import net.minecraft.network.protocol.login.ClientboundGameProfilePacket;
 import net.minecraft.network.protocol.login.ServerboundHelloPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerLoginPacketListenerImpl;
@@ -29,10 +26,14 @@ public abstract class MixinServerLoginPacketListenerImpl {
 
     @Shadow
     ServerLoginPacketListenerImpl.State state;
-    
+
     @Shadow
     @Nullable
     GameProfile gameProfile;
+
+    // Esto le dice a Java que este método existe en la clase original de Minecraft
+    @Shadow
+    protected abstract void startClientVerification(GameProfile profile);
 
     @Inject(method = "handleHello", at = @At("HEAD"), cancellable = true)
     public void handleHello(ServerboundHelloPacket serverboundHelloPacket, CallbackInfo ci) {
@@ -46,20 +47,14 @@ public abstract class MixinServerLoginPacketListenerImpl {
         }
     }
 
-@Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     public void onTick(CallbackInfo ci) {
         if (this.server instanceof ReplayServer) {
             if (this.state == ServerLoginPacketListenerImpl.State.READY_TO_ACCEPT) {
-                this.state = ServerLoginPacketListenerImpl.State.ACCEPTED;
-            }
-            // Si Sinytra nos tiene bloqueados aquí, saltamos directamente al inicio
-            if (this.state == ServerLoginPacketListenerImpl.State.ACCEPTED) {
-                // Este método es el que Minecraft llama para meter al jugador al mundo
-                this.verifyLoginAndFinishConnection(); 
+                // Forzamos el paso a la verificación
+                this.startClientVerification(this.gameProfile);
                 ci.cancel();
             }
         }
     }
-
-    // Los métodos comentados se pueden quedar así o eliminarse
 }
