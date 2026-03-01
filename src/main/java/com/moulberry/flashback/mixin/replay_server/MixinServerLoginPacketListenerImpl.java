@@ -55,7 +55,7 @@ public abstract class MixinServerLoginPacketListenerImpl {
             // Si Sinytra nos tiene bloqueados aquí, saltamos directamente al inicio
             if (this.state == ServerLoginPacketListenerImpl.State.ACCEPTED) {
                 // Este método es el que Minecraft llama para meter al jugador al mundo
-                this.handleGameProfileConfig(); 
+                this.verifyLoginAndFinishConnection(); 
                 ci.cancel();
             }
         }
