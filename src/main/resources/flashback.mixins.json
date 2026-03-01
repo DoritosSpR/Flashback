@@ -38,7 +38,7 @@
   "injectors": {
     "defaultRequire": 1
   },
-"mixins": [
+  "mixins": [
     "MixinThreadedLevelLightEngine",
     "compat.MixinSodiumWorldRenderer",
     "playback.MixinAbstractMinecart",
@@ -51,3 +51,4 @@
     "replay_server.MixinServerLevel",
     "visuals.MixinLevel"
   ]
+}
