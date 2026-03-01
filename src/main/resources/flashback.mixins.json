@@ -40,6 +40,8 @@
   },
   "mixins": [
     "MixinThreadedLevelLightEngine",
+    "compat.valkyrienskies.MixinEntityShipCollisionUtils",
+    "compat.valkyrienskies.MixinVSPipeline",
     "compat.MixinSodiumWorldRenderer",
     "playback.MixinAbstractMinecart",
     "playback.MixinAttributeInstance",
