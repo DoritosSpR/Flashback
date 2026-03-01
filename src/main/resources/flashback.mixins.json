@@ -50,6 +50,7 @@
     "playback.MixinLivingEntity",
     "playback.MixinScoreboard",
     "record.MixinConnection",
+    "replay_server.MixinServerLoginPacketListenerImpl",
     "replay_server.MixinPlayerList",
     "replay_server.MixinServerLevel",
     "visuals.MixinLevel"
